@@ -1,0 +1,22 @@
+<ng-container *ngIf="open">
+  <div class="app-modal-backdrop" (click)="onBackdropClick()"></div>
+  <div class="app-modal-wrapper" role="dialog" aria-modal="true">
+    <div class="app-modal-content">
+      <div class="modal-header border-bottom">
+        <h5 class="modal-title">{{ title }}</h5>
+        <button type="button" class="btn-close" (click)="closed.emit()" aria-label="Cerrar"></button>
+      </div>
+
+      <div class="modal-body">
+        <ng-content></ng-content>
+      </div>
+
+      <div class="modal-footer border-top">
+        <button type="button" class="btn btn-secondary" (click)="closed.emit()">Cancelar</button>
+        <button type="button" class="btn btn-primary" [disabled]="saving" (click)="saved.emit()">
+          <i class="bi bi-check-circle me-2"></i>{{ saving ? 'Guardando...' : saveLabel }}
+        </button>
+      </div>
+    </div>
+  </div>
+</ng-container>

@@ -1,0 +1,68 @@
+<div class="page-header mb-4">
+  <h2>Dashboard</h2>
+  <p class="text-muted">Bienvenido al Sistema de Gestión Académica</p>
+</div>
+
+<div class="row g-3 mb-5">
+  <div class="col-12 col-sm-6 col-lg-3">
+    <div class="stat-card gradient-blue" (click)="goTo('/estudiantes')">
+      <div class="stat-icon"><i class="bi bi-people-fill"></i></div>
+      <div class="stat-content">
+        <h6>Estudiantes</h6>
+        <h3>{{ totalEstudiantes }}</h3>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-sm-6 col-lg-3">
+    <div class="stat-card gradient-purple" (click)="goTo('/profesores')">
+      <div class="stat-icon"><i class="bi bi-mortarboard-fill"></i></div>
+      <div class="stat-content">
+        <h6>Profesores</h6>
+        <h3>{{ totalProfesores }}</h3>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-sm-6 col-lg-3">
+    <div class="stat-card gradient-green" (click)="goTo('/materias')">
+      <div class="stat-icon"><i class="bi bi-book-fill"></i></div>
+      <div class="stat-content">
+        <h6>Materias</h6>
+        <h3>{{ totalMaterias }}</h3>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-sm-6 col-lg-3">
+    <div class="stat-card gradient-orange" (click)="goTo('/grados')">
+      <div class="stat-icon"><i class="bi bi-collection-fill"></i></div>
+      <div class="stat-content">
+        <h6>Grados</h6>
+        <h3>{{ totalGrados }}</h3>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="welcome-section">
+  <div class="card border-0 shadow-sm">
+    <div class="card-body p-4">
+      <h5 class="mb-3"><i class="bi bi-star-fill text-warning me-2"></i>Acceso Rápido</h5>
+      <div class="row g-3">
+        <div class="col-md-4">
+          <button class="btn btn-outline-primary w-100" (click)="goTo('/estudiantes')">
+            <i class="bi bi-plus-circle me-2"></i>Nuevo Estudiante
+          </button>
+        </div>
+        <div class="col-md-4">
+          <button class="btn btn-outline-primary w-100" (click)="goTo('/notas')">
+            <i class="bi bi-plus-circle me-2"></i>Registrar Nota
+          </button>
+        </div>
+        <div class="col-md-4">
+          <button class="btn btn-outline-primary w-100" (click)="goTo('/matriculas')">
+            <i class="bi bi-plus-circle me-2"></i>Nueva Matrícula
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

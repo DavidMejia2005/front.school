@@ -1,0 +1,83 @@
+<div class="page-header mb-4 d-flex justify-content-between align-items-start flex-wrap gap-2">
+  <div>
+    <h2>Materias</h2>
+    <p class="text-muted mb-0">Catálogo de materias académicas</p>
+  </div>
+  <button class="btn btn-primary" (click)="abrirFormNuevo()">
+    <i class="bi bi-plus-circle me-2"></i>Nueva Materia
+  </button>
+</div>
+
+<div class="card border-0 shadow-sm">
+  <div class="table-responsive">
+    <table class="table table-hover align-middle mb-0">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Código</th>
+          <th>Descripción</th>
+          <th>Créditos</th>
+          <th class="text-end">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let mat of materias">
+          <td>{{ mat.nombre }}</td>
+          <td><span class="badge bg-secondary">{{ mat.codigo }}</span></td>
+          <td>{{ mat.descripcion || '-' }}</td>
+          <td><span class="badge bg-info">{{ mat.creditos }}</span></td>
+          <td class="text-end">
+            <button
+              *ngIf="authService.canPerform('edit_materia')"
+              class="btn btn-sm btn-outline-primary me-1"
+              (click)="editar(mat)"
+              title="Editar"
+            >
+              <i class="bi bi-pencil-fill"></i>
+            </button>
+            <button
+              *ngIf="authService.canPerform('delete_materia')"
+              class="btn btn-sm btn-outline-danger"
+              (click)="eliminar(mat.id)"
+              title="Eliminar"
+            >
+              <i class="bi bi-trash-fill"></i>
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="materias.length === 0">
+          <td colspan="5" class="text-center text-muted py-4">No hay materias registradas</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<app-modal
+  [open]="modalOpen"
+  [title]="editingId ? 'Editar Materia' : 'Nueva Materia'"
+  [saving]="saving"
+  (closed)="closeModal()"
+  (saved)="guardar()"
+>
+  <form [formGroup]="form">
+    <div class="row g-3">
+      <div class="col-md-8">
+        <label class="form-label">Nombre <span class="text-danger">*</span></label>
+        <input type="text" class="form-control" formControlName="nombre" />
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Código <span class="text-danger">*</span></label>
+        <input type="text" class="form-control" formControlName="codigo" />
+      </div>
+      <div class="col-12">
+        <label class="form-label">Descripción</label>
+        <textarea class="form-control" rows="3" formControlName="descripcion"></textarea>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Créditos <span class="text-danger">*</span></label>
+        <input type="number" min="1" class="form-control" formControlName="creditos" />
+      </div>
+    </div>
+  </form>
+</app-modal>

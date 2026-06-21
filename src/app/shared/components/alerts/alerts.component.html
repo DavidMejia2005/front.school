@@ -1,0 +1,10 @@
+<div class="alerts-container">
+  <div
+    *ngFor="let alert of alertService.alerts$ | async"
+    class="alert alert-{{ alert.type }} alert-dismissible fade show"
+    role="alert"
+  >
+    {{ alert.message }}
+    <button type="button" class="btn-close" (click)="alertService.remove(alert.id)" aria-label="Cerrar"></button>
+  </div>
+</div>

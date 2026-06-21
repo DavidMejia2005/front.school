@@ -1,0 +1,121 @@
+<div class="page-header mb-4 d-flex justify-content-between align-items-start flex-wrap gap-2">
+  <div>
+    <h2>Matrículas</h2>
+    <p class="text-muted mb-0">Gestión de matrículas e inscripciones</p>
+  </div>
+  <button class="btn btn-primary" (click)="abrirFormNuevo()">
+    <i class="bi bi-plus-circle me-2"></i>Nueva Matrícula
+  </button>
+</div>
+
+<div class="card border-0 shadow-sm mb-4">
+  <div class="card-body">
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label">Año Lectivo</label>
+        <input
+          type="number"
+          class="form-control"
+          placeholder="Ej: 2026"
+          [(ngModel)]="filtroAnio"
+          (ngModelChange)="loadMatriculas()"
+        />
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Estado</label>
+        <select class="form-select" [(ngModel)]="filtroEstado" (ngModelChange)="loadMatriculas()">
+          <option value="">Todos los estados</option>
+          <option value="activa">Activa</option>
+          <option value="pausada">Pausada</option>
+          <option value="finalizada">Finalizada</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card border-0 shadow-sm">
+  <div class="table-responsive">
+    <table class="table table-hover align-middle mb-0">
+      <thead>
+        <tr>
+          <th>Estudiante</th>
+          <th>Grado</th>
+          <th>Año Lectivo</th>
+          <th>Fecha Matrícula</th>
+          <th>Estado</th>
+          <th class="text-end">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let mat of matriculas">
+          <td>{{ mat.estudiante_nombre || nombreEstudiante(mat.estudiante_id) }}</td>
+          <td>{{ mat.grado_nombre || nombreGrado(mat.grado_id) }}</td>
+          <td>{{ mat['año_lectivo'] }}</td>
+          <td>{{ mat.fecha_matricula | date }}</td>
+          <td><span class="badge" [ngClass]="(mat.estado | statusBadge).cssClass">{{ (mat.estado | statusBadge).label }}</span></td>
+          <td class="text-end">
+            <button
+              *ngIf="authService.canPerform('edit_matricula')"
+              class="btn btn-sm btn-outline-primary me-1"
+              (click)="editar(mat)"
+              title="Editar"
+            >
+              <i class="bi bi-pencil-fill"></i>
+            </button>
+            <button
+              *ngIf="authService.canPerform('delete_matricula')"
+              class="btn btn-sm btn-outline-danger"
+              (click)="eliminar(mat.id)"
+              title="Eliminar"
+            >
+              <i class="bi bi-trash-fill"></i>
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="matriculas.length === 0">
+          <td colspan="6" class="text-center text-muted py-4">No hay matrículas registradas</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<app-modal
+  [open]="modalOpen"
+  [title]="editingId ? 'Editar Matrícula' : 'Nueva Matrícula'"
+  [saving]="saving"
+  (closed)="closeModal()"
+  (saved)="guardar()"
+>
+  <form [formGroup]="form">
+    <div class="row g-3">
+      <div class="col-12">
+        <label class="form-label">Estudiante <span class="text-danger">*</span></label>
+        <select class="form-select" formControlName="estudiante_id">
+          <option value="">Seleccionar estudiante</option>
+          <option *ngFor="let e of estudiantes" [value]="e.id">{{ e.nombres }} {{ e.apellidos }}</option>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Grado <span class="text-danger">*</span></label>
+        <select class="form-select" formControlName="grado_id">
+          <option value="">Seleccionar grado</option>
+          <option *ngFor="let g of grados" [value]="g.id">{{ g.nombre }}</option>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Año Lectivo <span class="text-danger">*</span></label>
+        <input type="number" class="form-control" formControlName="año_lectivo" />
+      </div>
+      <div class="col-12">
+        <label class="form-label">Estado <span class="text-danger">*</span></label>
+        <select class="form-select" formControlName="estado">
+          <option value="activa">Activa</option>
+          <option value="pausada">Pausada</option>
+          <option value="finalizada">Finalizada</option>
+        </select>
+      </div>
+    </div>
+  </form>
+</app-modal>
